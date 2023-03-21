@@ -150,6 +150,18 @@ function show_questions(json, mydiv) {
         // iDiv.innerHTML="<b>Select your answers and then follow the directions that will appear here.</b>"
         //iDiv.className = 'Quiz';
         mydiv.appendChild(iDiv);
+
+        // Adding a communication channel
+        const listenerChannel = new BroadcastChannel('jupyterQuiz');
+        listenerChannel.onmessage = (msg) => {
+            if (msg.data && msg.data.request === 'getScore') {
+                const numberCorrect = document.querySelector('div[id^="quizWrap"]').parentElement.querySelectorAll('div.Feedback.correct');
+                listenerChannel.postMessage({
+                    numberCorrect,
+                    questions
+                });
+            }
+        };
     }
 //console.log("At end of show_questions");
     if (typeof MathJax != 'undefined') {
