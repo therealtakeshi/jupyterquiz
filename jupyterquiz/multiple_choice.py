@@ -15,7 +15,7 @@ def display_quiz_mc(question, answers, multiple=False, randomize=True,
     question_mid = ''';
       color: #fff;
       font-size: 20px;
-      border-radius: 10px;">
+      border-radius: 2px;">
       '''
     question_end = '</div>'
 
@@ -36,7 +36,7 @@ def display_quiz_mc(question, answers, multiple=False, randomize=True,
     input_start = '''<input type="radio" name="quiz" id="quizo'''
     input_end = '''" style="display:none;" >'''
     label_start = '''<label style="background: #fafafa;
-      border: 1px solid #eee;  border-radius: 10px; padding: 10px;
+      border: 1px solid #eee;  border-radius: 2px; padding: 10px;
       font-size: 16px; cursor: pointer; text-align: center;" 
       onclick="check'''
     label_start += feedback_id
