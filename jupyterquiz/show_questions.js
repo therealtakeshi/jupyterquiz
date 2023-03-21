@@ -57,15 +57,7 @@ function show_questions(json, mydiv) {
     }
 
     // Adding a communication channel
-    const listenerChannel = new BroadcastChannel('jupyterQuiz');
-    listenerChannel.onmessage = (msg) => {
-        if (msg.data && msg.data.request === 'getScore') {
-            const numberCorrect = document.querySelector('div[id^="quizWrap"]').parentElement.querySelectorAll('div.Feedback.correct');
-            listenerChannel.postMessage({
-                numberCorrect
-            });
-        }
-    };
+    const bcChannel = new BroadcastChannel('jupyterQuiz');
 
     //console.log("SQ: "+shuffle_questions+", NQ: " + num_questions + ", SA: ", shuffle_answers);
 
@@ -125,12 +117,12 @@ function show_questions(json, mydiv) {
 
         var num_correct;
         if (qa.type == "multiple_choice") {
-            num_correct = make_mc(qa, shuffle_answers, outerqDiv, qDiv, aDiv, id);
+            num_correct = make_mc(qa, shuffle_answers, outerqDiv, qDiv, aDiv, id, bcChannel);
         } else if (qa.type == "many_choice") {
-            num_correct = make_mc(qa, shuffle_answers, outerqDiv, qDiv, aDiv, id);
+            num_correct = make_mc(qa, shuffle_answers, outerqDiv, qDiv, aDiv, id, bcChannel);
         } else if (qa.type == "numeric") {
             //console.log("numeric");
-            make_numeric(qa, outerqDiv, qDiv, aDiv, id);
+            make_numeric(qa, outerqDiv, qDiv, aDiv, id, bcChannel);
         }
 
 
