@@ -177,21 +177,7 @@ function isValid(el, charC) {
     return true;
 }
 
-function numeric_keypress(evnt) {
-    var charC = (evnt.which) ? evnt.which : evnt.keyCode;
-
-    if (charC == 13) {
-        check_numeric(this, evnt);
-    } else {
-        return isValid(this, charC);
-    }
-}
-
-
-
-
-
-function make_numeric(qa, outerqDiv, qDiv, aDiv, id) {
+function make_numeric(qa, outerqDiv, qDiv, aDiv, id, bcChannel) {
 
 
 
@@ -227,7 +213,23 @@ function make_numeric(qa, outerqDiv, qDiv, aDiv, id) {
                         );
                         */
     //inp.onkeypress="return numeric_keypress(this, event)";
-    inp.onkeypress = numeric_keypress;
+    inp.onkeydown = (evnt) => {
+        var charC = evnt.code;
+    
+        if (charC == 13) {
+            check_numeric(this, evnt);
+        } else {
+            const isVal = isValid(this, charC);
+            if (isVal) {
+                bcChannel.postMessage({
+                    status: 'correct',
+                    id,
+                    qa,
+                });
+            }
+            return isVal;
+        }
+    }
     inp.onpaste = event => false;
 
     inp.addEventListener("focus", function (event) {
