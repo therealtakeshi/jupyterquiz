@@ -86,9 +86,9 @@ function make_mc(qa, shuffle_answers, outerqDiv, qDiv, aDiv, id, bcChannel) {
                 fb.classList.add("correct");
                 
                 bcChannel.postMessage({
+                    question: qa.question,
                     status: 'correct',
                     id,
-                    qa,
                 });
             } else {
                 if ("feedback" in label.dataset) {
@@ -130,11 +130,6 @@ function make_mc(qa, shuffle_answers, outerqDiv, qDiv, aDiv, id, bcChannel) {
                     fb.className = "Feedback";
                     fb.classList.add("correct");
     
-                    bcChannel.postMessage({
-                        status: 'correct',
-                        id,
-                        qa,
-                    });
                 }
             } else {
                 if ("feedback" in label.dataset) {
@@ -197,10 +192,17 @@ function make_mc(qa, shuffle_answers, outerqDiv, qDiv, aDiv, id, bcChannel) {
             var answeredcorrect = fb.dataset.answeredcorrect;
             if (answeredcorrect >= 0) {
                 fb.textContent = feedback + " [" + answeredcorrect + "/" + numcorrect + "]";
+
+                if (answeredcorrect === numcorrect) {
+                    bcChannel.postMessage({
+                        question: qa.question,
+                        status: 'correct',
+                        id,
+                    });
+                }
             } else {
                 fb.textContent = feedback + " [" + 0 + "/" + numcorrect + "]";
             }
-    
     
         }
     

@@ -1,4 +1,4 @@
-function check_numeric(ths, event) {
+function check_numeric(ths, event, qa, bcChannel) {
 
     if (event.keyCode === 13) {
         ths.blur();
@@ -77,6 +77,12 @@ function check_numeric(ths, event) {
             ths.classList.add("correctButton");
             fb.className = "Feedback";
             fb.classList.add("correct");
+
+            bcChannel.postMessage({
+                question: qa.question,
+                status: 'correct',
+                id,
+            });
         } else {
             ths.className = "Input-text";
             ths.classList.add("incorrectButton");
@@ -213,23 +219,16 @@ function make_numeric(qa, outerqDiv, qDiv, aDiv, id, bcChannel) {
                         );
                         */
     //inp.onkeypress="return numeric_keypress(this, event)";
-    inp.onkeydown = (evnt) => {
-        var charC = evnt.code;
-    
+    function numeric_keypress(evnt) {
+        var charC = (evnt.which) ? evnt.which : evnt.keyCode;
+
         if (charC == 13) {
-            check_numeric(this, evnt);
+            check_numeric(this, evnt, qa, bcChannel);
         } else {
-            const isVal = isValid(this, charC);
-            if (isVal) {
-                bcChannel.postMessage({
-                    status: 'correct',
-                    id,
-                    qa,
-                });
-            }
-            return isVal;
+            return isValid(this, charC);
         }
     }
+    inp.onkeydown = numeric_keypress;
     inp.onpaste = event => false;
 
     inp.addEventListener("focus", function (event) {
